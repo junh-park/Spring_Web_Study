@@ -1,7 +1,14 @@
 package com.jun.main;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Component;
+
+@Component
 public class Hello {
 	String name;
+	
+	@Resource
 	Printer printer;
 	
 	public String sayHello() {
@@ -19,4 +26,6 @@ public class Hello {
 	public void setPrinter(Printer printer) {
 		this.printer = printer;
 	}
+	
+
 }
