@@ -10,6 +10,6 @@
 
 	<context:annotation-config />
 	
+	<bean id="helloSpring" class="com.jun.HelloSpring" />
 	<bean name="/hello" class="com.jun.HelloController" />
-		
 </beans>
