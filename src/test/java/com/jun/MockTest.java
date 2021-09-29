@@ -52,18 +52,18 @@ public class MockTest {
 //		
 //	}
 	
-	@Test
-	public void controllerTest() throws Exception {
-		GenericXmlApplicationContext ac = new GenericXmlApplicationContext("spring-servlet.xml");
-		HelloController helloController = ac.getBean(HelloController.class);
-		
-		MockHttpServletRequest req = new MockHttpServletRequest("GET", "/hello");
-		req.addParameter("name", "Spring");
-		MockHttpServletResponse resp = new MockHttpServletResponse();
-		
-		ModelAndView mav = helloController.handleRequest(req, resp);
-		
-		assertThat(mav.getViewName(), is("/WEB-INF/views/hello.jsp"));
-		assertThat((String)mav.getModel().get("message"), is("Hello Spring"));
-	}
+//	@Test
+//	public void controllerTest() throws Exception {
+//		GenericXmlApplicationContext ac = new GenericXmlApplicationContext("spring-servlet.xml");
+//		HelloController helloController = ac.getBean(HelloController.class);
+//		
+//		MockHttpServletRequest req = new MockHttpServletRequest("GET", "/hello");
+//		req.addParameter("name", "Spring");
+//		MockHttpServletResponse resp = new MockHttpServletResponse();
+//		
+//		ModelAndView mav = helloController.handleRequest(req, resp);
+//		
+//		assertThat(mav.getViewName(), is("/WEB-INF/views/hello.jsp"));
+//		assertThat((String)mav.getModel().get("message"), is("Hello Spring"));
+//	}
 }
