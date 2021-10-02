@@ -1,5 +1,8 @@
 package spittr.config;
 
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration.Dynamic;
+
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class SpittrWebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
@@ -14,6 +17,11 @@ public class SpittrWebAppInitializer extends AbstractAnnotationConfigDispatcherS
 
 	protected String[] getServletMappings() {
 		return new String[] { "/" };
+	}
+	
+	@Override
+	protected void customizeRegistration(Dynamic registration) {
+		new MultipartConfigElement("/uploads");
 	}
 
 }

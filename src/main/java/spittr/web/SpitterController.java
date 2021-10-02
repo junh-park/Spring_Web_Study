@@ -11,6 +11,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import spittr.Spitter;
 import spittr.data.SpitterRepository;
@@ -35,15 +36,18 @@ public class SpitterController {
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String processRegistration(@Valid Spitter spitter, Errors errors) {
+	public String processRegistration(@Valid Spitter spitter, RedirectAttributes model, Errors errors) {
 		if(errors.hasErrors()) return "registerForm";
 		
 		spitterRepo.save(spitter);
-		return "redirect:/spitter/" + spitter.getUsername();
+		model.addAttribute("username", spitter.getUsername());
+		model.addFlashAttribute("spitter", spitter);
+		return "redirect:/spitter/{username}";
 	}
 	
 	@RequestMapping(value = "/{username}", method = RequestMethod.GET)
 	public String showSpitterProfile(@PathVariable String username, Model model) {
+		if(!model.containsAttribute("spitter")) model.addAttribute(spitterRepo.findByUsername(username));
 		Spitter spitter = spitterRepo.findByUsername(username);
 		model.addAttribute(spitter);
 		return "profile";
