@@ -1,27 +1,44 @@
 package spittr.config;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+import org.springframework.security.config.annotation.web.configurers.ChannelSecurityConfigurer.RequiresChannelUrl;
+
+import spittr.data.SpitterRepository;
+import spittr.web.SpitterUserService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
-	DataSource dataSource;
+	SpitterRepository spitterRepo;
 	
-	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.jdbcAuthentication().dataSource(dataSource).usersByUsernameQuery(
-				"select username, password, true " + 
-				"from Spitter where username=?").authoritiesByUsernameQuery(
-						"select username, 'ROLE_USER' from Spitter where username=?")
-				.passwordEncoder(new StandardPasswordEncoder("53cr3t"));
+		auth.userDetailsService(new SpitterUserService(spitterRepo));
+	}
+	
+	protected void configure(HttpSecurity http) throws Exception {
+		http.formLogin()
+			.and()
+			.httpBasic()
+				.realmName("Spittr")
+			.and()
+			.rememberMe()
+				.tokenValiditySeconds(2000000)
+				.key("spittrKey")
+			.and()
+			.authorizeRequests()
+				.antMatchers("spitter/me").hasRole("SPITTER")
+				.antMatchers(HttpMethod.POST,"/spittles").hasRole("SPITTER")
+				.anyRequest().permitAll()
+			.and()
+			.requiresChannel()
+				.antMatchers("/spitter/form").requiresSecure();
 	}
 	
 }
