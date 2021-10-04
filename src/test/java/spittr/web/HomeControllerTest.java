@@ -9,6 +9,8 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 
+import spittr.domain.web.HomeController;
+
 public class HomeControllerTest {
 
 	@Test

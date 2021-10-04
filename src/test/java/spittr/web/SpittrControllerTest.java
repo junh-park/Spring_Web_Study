@@ -17,8 +17,9 @@ import org.junit.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.view.InternalResourceView;
 
-import spittr.Spittle;
-import spittr.data.SpittleRepository;
+import spittr.domain.Spittle;
+import spittr.domain.data.SpittleRepository;
+import spittr.domain.web.SpittleController;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(classes = {WebConfig.class, RootConfig.class})
